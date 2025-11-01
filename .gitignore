@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+.venv/
+venv/
+env/
+ENV/
+bin/
+lib/
+lib64/
+include/
+pyvenv.cfg
+
+# Environment files
+.env
+
+# OS / editor stuff
+.DS_Store
+.idea/
+.vscode/
+
