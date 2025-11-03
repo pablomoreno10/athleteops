@@ -1,0 +1,29 @@
+version: '3.9' #Docker Compose file format version
+services:
+  db: 
+    container_name: postgres-instance
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql #Volume for data persistence
+
+  redis:
+    image: redis:latest
+    container_name: redis-instance
+    restart: always
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+
+volumes:
+  #Define the named volumes for data persistence
+  postgres_data: 
+  redis_data:
+
