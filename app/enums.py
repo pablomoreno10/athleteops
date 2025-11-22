@@ -15,3 +15,15 @@ class TaskStatus(str, Enum):
     pending = "pending"
     scheduled = "scheduled"
     done = "done"
+
+class TransactionCategory(str, Enum):
+    dining = "dining"
+    transportation = "transportation"
+    groceries = "groceries"
+    shopping = "shopping"
+    school = "school"
+    entertainment = "entertainment"
+    health = "health"
+    other = "other"
+
+
