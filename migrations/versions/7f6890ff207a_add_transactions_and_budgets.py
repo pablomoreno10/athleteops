@@ -1,8 +1,8 @@
-"""add transactions and budget tables
+"""add transactions and budgets
 
-Revision ID: d9cb778d794a
+Revision ID: 7f6890ff207a
 Revises: 043c96f36e1e
-Create Date: 2025-11-21 22:15:32.169883
+Create Date: 2025-11-21 23:25:27.919785
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'd9cb778d794a'
+revision: str = '7f6890ff207a'
 down_revision: Union[str, Sequence[str], None] = '043c96f36e1e'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -28,7 +28,8 @@ def upgrade() -> None:
     sa.Column('weekly_cents', sa.Integer(), nullable=False),
     sa.Column('time_created', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('user_id', 'category', name='uq_budget_user_category')
     )
     op.create_index(op.f('ix_budgets_user_id'), 'budgets', ['user_id'], unique=False)
     op.create_table('transaction_logs',
@@ -43,8 +44,7 @@ def upgrade() -> None:
     sa.Column('time_created', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('time_deleted', sa.DateTime(timezone=True), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('user_id', 'category', name='uq_budget_user_category')
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_transaction_logs_user_id'), 'transaction_logs', ['user_id'], unique=False)
     # ### end Alembic commands ###

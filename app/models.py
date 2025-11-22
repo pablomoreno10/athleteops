@@ -31,7 +31,7 @@ class Task(Base):
     due_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True, nullable=False)
     estimated_duration_min: Mapped[int] = mapped_column(Integer, nullable=False)
     importance: Mapped[Importance] = mapped_column(SAEnum(Importance, name="task_importance_enum"), nullable=False)
-    status: Mapped[TaskStatus] = mapped_column(SAEnum(TaskStatus, name="task_status_enum"),nullable=False,server_default=TaskStatus.pending.value,)
+    status: Mapped[TaskStatus] = mapped_column(SAEnum(TaskStatus, name="task_status_enum"),nullable=False,server_default=TaskStatus.pending.value, )
     scheduled_start: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     scheduled_end: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     danger_flag: Mapped[bool] = mapped_column(Boolean, nullable=False, server_default=text("false"))
@@ -59,7 +59,7 @@ class HealthLog(Base):
 
 class Transactions(Base):
     __tablename__ = "transaction_logs"
-    __table_args__ = (UniqueConstraint("user_id", "category", name="uq_budget_user_category"),)
+    
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False)
@@ -75,6 +75,7 @@ class Transactions(Base):
 class Budget(Base):
     __tablename__ = "budgets"
     
+    __table_args__ = (UniqueConstraint("user_id", "category", name="uq_budget_user_category"),)
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False)
     category: Mapped[TransactionCategory] = mapped_column(SAEnum(TransactionCategory,name='transaction_category_enum'), nullable=False)
