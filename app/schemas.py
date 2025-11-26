@@ -29,6 +29,7 @@ class TaskRead(TaskBase):
     is_archived: bool = False
     time_created: datetime
     time_updated: datetime | None = None
+    
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -74,7 +75,10 @@ class TransactionRead(TransactionBase):
 
 class BudgetBase(BaseModel):
     category: TransactionCategory
-    weekly_cents: int
+    weekly_cents: int = Field(gt=0)
+
+class BudgetUpdate(BudgetBase):
+    pass
 
 class BudgetRead(BudgetBase):
     id: int

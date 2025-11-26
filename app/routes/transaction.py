@@ -6,7 +6,6 @@ from app.db import get_db
 
 from app.models import Transactions
 from app.schemas import TransactionCreate, TransactionRead
-from app.enums import TransactionCategory
 
 router = APIRouter(prefix="/finance", tags=["finance"])
 
@@ -26,7 +25,7 @@ def create_transaction(transaction_in: TransactionCreate, db: Session=Depends(ge
         db.refresh(transaction_out)
         return transaction_out
 
-#get transactions no latest than one week ago
+#get transactions from the last 7 days
 @router.get("/transactions/week", response_model=list[TransactionRead])
 def list_transactions(days_ago: int = Query(7, ge=1, description="Number of days to look back"), db: Session=Depends(get_db)):
     now = datetime.now(timezone.utc)
