@@ -1,0 +1,10 @@
+
+.app{
+    background-color: #020617;
+    accent-color: indigo;
+}
+
+.dashboard-grid{
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1.2fr;
+}
