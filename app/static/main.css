@@ -1,10 +1,29 @@
 
 .app{
     background-color: #020617;
-    accent-color: indigo;
+    accent-color: white;
+    font-family: system-ui
+}
+
+header{
+    color: white;
+    text-align: center;
+    font-size: larger;
+    
 }
 
 .dashboard-grid{
     display: grid;
     grid-template-columns: 1.2fr 1fr 1.2fr;
+    gap: 1rem;
+}
+
+h1{
+    text-align: center;
+    color: aliceblue;
+}
+
+.panel{
+    color: white;
+    text-align: center;
 }

@@ -4,10 +4,12 @@
         <title>AthleteOps</title>
         <link rel="stylesheet" href="{{ url_for('static', path='main.css') }}">
     </head>
-    <body class="app">
-        <header> Welcome to AthleteOps </header>
+     <body class="app">
+        <header>
+            <h1><a href="{{ url_for('dashboard') }}">Dashboard</a></h1>
+        </header>
         <main class="dashboard-grid">
-            <h1><a href="{{url_for('read_root')}}">Dashboard</a></h1>
+            {% block content %}{% endblock %}
         </main>
     </body>
 </html>

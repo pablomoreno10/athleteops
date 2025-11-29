@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="panel">
+    <h2>Tasks</h2>
+    {% if tasks %}
+      <ul>
+        {% for task in tasks %}
+          <li>
+            <strong>{{ task.title }}</strong><br>
+            <small>{{ task.course }} — {{ task.due_at }}</small>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No tasks yet.</p>
+    {% endif %}
+    <form class="task-post" method="post" action="/tasks/form">
+      <input type="text" name="title" placeholder="Title">
+      <input type="text" name="course" placeholder="Course">
+      <br><label for="due_at">Due date: </label><input type="date" name="due_at" placeholder="Date">
+      <br><input type="number" name="estimated_duration_min" placeholder="Estimated duration mins">
+      <br><select name="importance">
+        <option value="low">low</option>
+        <option value="med">med</option>
+        <option value="high">high</option>
+      </select>
+      <select name="type">
+        <option value="hw">hw</option>
+        <option value="exam">exam</option>
+        <option value="project">project</option>
+        <option value="other">other</option>
+      </select>
+      <button type="submit">Save</button>
+    </form>
+  </section>
+
+  <section class="panel">
+    <h2>Health</h2>
+    {% if health_log %}
+            <strong>{{ health_log.sleep_hours }}</strong><br>
+            <strong>{{ health_log.hydration_liters }}</strong><br>
+            <strong>{{ health_log.exercise_minutes }}</strong><br>
+            <strong>{{ health_log.prayer_minutes }}</strong><br>
+            <strong>{{ health_log.social_media_minutes }}</strong><br>
+            <strong>{{ health_log.notes }}</strong><br>
+    {% else %}
+      <p>No health log yet.</p>
+    {% endif %}
+    <form class="health-post" method="post" action="/health-log/today/form">
+      <input type="number" step="0.1" name="sleep_hours" placeholder="Sleep (h)">
+      <input type="number" step="0.1" name="hydration_liters" placeholder="Water (L)">
+      <input type="number" step="0.1" name="exercise_minutes" placeholder="Exercise (mins)">
+      <input type="number" step="0.1" name="prayer_minutes" placeholder="Prayer/Meditation (mins)">
+      <input type="number" step="0.1" name="social_media_minutes" placeholder="Social Media (mins)">
+      <input type="text" name="notes" placeholder="Notes">
+      <br><button type="submit">Save</button>
+    </form>
+  </section>
+
+  <section class="panel">
+    <h2>Finance</h2>
+    <strong>Weekly Transactions</strong><br>
+    {% if transactions %}
+      <ul>
+        {% for transaction in transactions %}
+            <small>{{ transaction.category.name|title() }} — {{ transaction.amount_cents / 100 }} - {{ transaction.merchant }}</small>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No tasks yet.</p>
+    {% endif %}
+      <form method="post" action="/finance/transactions/form">
+        <input name="merchant" placeholder="Merchant">
+        <input type="number" name="amount_cents" placeholder="Amount (cents)">
+        <input name="category" placeholder="Category">
+        <button type="submit">Add</button>
+      </form>
+    </section>
+    
+
+  <!-- health + finance panels later -->
+{% endblock %}
