@@ -4,14 +4,14 @@
   <section class="panel">
     <h2>Tasks</h2>
     {% if tasks %}
-      <ul>
-        {% for task in tasks %}
-          <li>
-            <strong>{{ task.title }}</strong><br>
+        <br>
+        {% for task in tasks %}  
+            <strong>{{ task.title }}</strong>
+            <br>
             <small>{{ task.course }} — {{ task.due_at }}</small>
-          </li>
+            <br>
         {% endfor %}
-      </ul>
+        <br><br>
     {% else %}
       <p>No tasks yet.</p>
     {% endif %}
