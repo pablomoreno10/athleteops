@@ -8,7 +8,7 @@
         {% for task in tasks %}  
             <strong>{{ task.title }}</strong>
             <br>
-            <small>{{ task.course }} — {{ task.due_at }}</small>
+            <small>{{ task.course }} — {{ task.due_at.strftime("%Y-%m-%d") }}</small>
             <br>
         {% endfor %}
         <br><br>

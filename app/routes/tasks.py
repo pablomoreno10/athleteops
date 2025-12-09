@@ -53,7 +53,7 @@ def create_task_from_form(
         user_id=DEFAULT_USER_ID,
         title=title,
         course=course or None,
-        due_at=due_at,
+        due_at=parsed_due,
         estimated_duration_min=estimated_duration_min,
         importance=importance,
         type=type,
