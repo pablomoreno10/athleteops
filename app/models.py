@@ -60,7 +60,6 @@ class HealthLog(Base):
 class Transactions(Base):
     __tablename__ = "transaction_logs"
     
-
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False)
     date: Mapped[date] = mapped_column(Date, nullable=False)

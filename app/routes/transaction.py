@@ -6,8 +6,10 @@ from datetime import date, datetime, timedelta, timezone
 from app.db import get_db
 
 from app.models import Transactions
-from app.schemas import TransactionCreate, TransactionRead
+from app.schemas import TransactionCreate, TransactionRead, TransactionGraph
 from app.enums import TransactionCategory
+
+from sqlalchemy import func
 
 router = APIRouter(prefix="/finance", tags=["finance"])
 
@@ -32,9 +34,28 @@ def create_transaction(transaction_in: TransactionCreate, db: Session=Depends(ge
 def list_transactions(days_ago: int = Query(7, ge=1, description="Number of days to look back"), db: Session=Depends(get_db)):
     now = datetime.now(timezone.utc)
     start_date = now - timedelta(days=days_ago)
-    weekly_transactions = db.query(Transactions).filter(Transactions.time_created >= start_date).all()
-    return weekly_transactions
+    weekly_summary = db.query(Transactions).filter(Transactions.user_id , Transactions.time_created >= start_date).all()
+    return weekly_summary
 
+@router.get("/transactions/week/summary", response_model=list[TransactionGraph])
+def transactions_summary(
+    days_ago: int = Query(14, ge=1), 
+    user_id: int = 1, # Hardcoded for now to make the filter work
+    db: Session = Depends(get_db)
+):
+    now = datetime.now(timezone.utc)
+    start_date = now - timedelta(days=days_ago)
+    
+    summary = db.query(
+        Transactions.category, 
+        func.sum(Transactions.amount_cents).label("total_cents")
+    ).filter(
+        Transactions.time_created >= start_date,
+        Transactions.user_id == user_id
+    ).group_by(Transactions.category).all()
+    
+    return summary
+    
 
 @router.post("/transactions/form")
 def create_transaction_from_form(
@@ -63,3 +84,5 @@ def create_transaction_from_form(
     db.commit()
     db.refresh(transaction_out)
     return RedirectResponse("/", status_code=303)
+
+

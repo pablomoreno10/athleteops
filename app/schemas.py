@@ -72,6 +72,11 @@ class TransactionRead(TransactionBase):
 
     model_config = ConfigDict(from_attributes=True)
 
+class TransactionGraph(BaseModel):
+    total_cents: int
+    category: TransactionCategory
+    model_config = ConfigDict(from_attributes=True)
+
 
 class BudgetBase(BaseModel):
     category: TransactionCategory
