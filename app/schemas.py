@@ -4,6 +4,15 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from .enums import Importance, TaskStatus, TaskType, TransactionCategory
 
+class UserBase(BaseModel):
+    first_name: str
+    last_name: str
+    email:str
+
+
+#What the user sends during registration
+class UserCreate(UserBase):
+    password: str
 
 #Core task shape
 class TaskBase(BaseModel):
