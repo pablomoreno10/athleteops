@@ -61,4 +61,4 @@ def create_task_from_form(
     db.add(task)
     db.commit()
     db.refresh(task)
-    return RedirectResponse("/", status_code=303)
+    return RedirectResponse("/dashboard", status_code=303)

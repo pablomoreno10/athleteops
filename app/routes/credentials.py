@@ -150,7 +150,7 @@ def login_user_from_form(
                 expires_delta=timedelta(minutes=15)
             )
             
-            response = RedirectResponse("/", status_code=303)
+            response = RedirectResponse("/dashboard", status_code=303)
             response.set_cookie(
                 key="access_token",
                 value=token,

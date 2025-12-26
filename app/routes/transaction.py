@@ -83,6 +83,6 @@ def create_transaction_from_form(
     db.add(transaction_out)
     db.commit()
     db.refresh(transaction_out)
-    return RedirectResponse("/", status_code=303)
+    return RedirectResponse("/dashboard", status_code=303)
 
 

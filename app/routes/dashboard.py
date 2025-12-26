@@ -11,7 +11,7 @@ from datetime import date
 router = APIRouter(tags=["dashboard"])
 templates = Jinja2Templates(directory="app/templates")
 
-@router.get("/", response_class=HTMLResponse)
+@router.get("/dashboard", response_class=HTMLResponse)
 def dashboard(request: Request, db: Session = Depends(get_db), user_id: int = Depends(get_current_user_id)):
     tasks = (
         db.query(Task)

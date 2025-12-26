@@ -62,7 +62,7 @@ def upsert_today_health_log_form(
 
     db.commit()
     db.refresh(log)
-    return RedirectResponse("/", status_code=303)
+    return RedirectResponse("/dashboard", status_code=303)
 
 
 @router.get("/today", response_model=HealthLogRead | None)

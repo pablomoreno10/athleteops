@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-
+from fastapi.responses import RedirectResponse
 
 from app.routes.health import router as health_router
 from app.routes.tasks import router as tasks_router
@@ -12,6 +12,11 @@ from app.routes.credentials import router as credentials_router
 app = FastAPI(title="AthleteOps API")
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
+
+@app.get("/")
+def root():
+    """Redirect root to login page."""
+    return RedirectResponse(url="/auth/login")
 
 app.include_router(tasks_router)
 app.include_router(health_router)
