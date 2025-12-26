@@ -6,7 +6,12 @@
     </head>
      <body class="app">
         <header>
-            <h1><a href="{{ url_for('dashboard') }}">Dashboard</a></h1>
+            <h1><a href="{{ url_for('dashboard') }}" style="text-decoration: none; color: inherit;">Dashboard</a></h1>
+            <form method="post" action="/auth/logout/form" style="display: inline; margin-left: 1rem;">
+                <button type="submit" style="padding: 0.5rem 1rem; border-radius: 0.5rem; background-color: #dc2626; color: white; border: none; cursor: pointer; font-size: 0.875rem;">
+                    Logout
+                </button>
+            </form>
         </header>
         <main class="dashboard-grid">
             {% block content %}{% endblock %}

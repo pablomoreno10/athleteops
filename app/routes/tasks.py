@@ -7,22 +7,20 @@ from app.db import get_db
 from app.enums import TaskStatus, Importance, TaskType
 from app.models import Task
 from app.schemas import TaskCreate, TaskRead
+from app.auth import get_current_user_id
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
 
-# Temporary default until auth/user management exists
-DEFAULT_USER_ID = 1
-
 
 @router.get("/", response_model=list[TaskRead])
-def list_tasks(db: Session = Depends(get_db)):
-    tasks = db.query(Task).filter_by(user_id = DEFAULT_USER_ID).order_by(Task.due_at.asc()).all()
+def list_tasks(db: Session = Depends(get_db), user_id: int = Depends(get_current_user_id)):
+    tasks = db.query(Task).filter_by(user_id = user_id).order_by(Task.due_at.asc()).all()
     return tasks
 
 @router.post("/", response_model=TaskRead)
-def create_task(task_in: TaskCreate, db: Session = Depends(get_db)):
+def create_task(task_in: TaskCreate, db: Session = Depends(get_db), user_id: int = Depends(get_current_user_id)):
     task = Task(
-        user_id=DEFAULT_USER_ID,
+        user_id=user_id,
         status=TaskStatus.pending,
         **task_in.model_dump(),
     )
@@ -40,6 +38,7 @@ def create_task_from_form(
     importance: Importance = Form(...),
     type: TaskType = Form(...),
     db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user_id),
 ):
     try:
         parsed_due = datetime.fromisoformat(due_at)
@@ -50,7 +49,7 @@ def create_task_from_form(
         parsed_due = parsed_due.replace(tzinfo=timezone.utc)
 
     task = Task(
-        user_id=DEFAULT_USER_ID,
+        user_id=user_id,
         title=title,
         course=course or None,
         due_at=parsed_due,

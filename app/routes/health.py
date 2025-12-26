@@ -7,24 +7,22 @@ from sqlalchemy.orm import Session
 from app.db import get_db
 from app.models import HealthLog
 from app.schemas import HealthLogRead, HealthLogUpdate
+from app.auth import get_current_user_id
 
 router = APIRouter(prefix="/health-log", tags=["health"])
 
-# Temporary default until auth/user management exists
-DEFAULT_USER_ID = 1
-
 
 @router.post("/today", response_model=HealthLogRead)
-def upsert_today_health_log(payload: HealthLogUpdate, db: Session = Depends(get_db)):
+def upsert_today_health_log(payload: HealthLogUpdate, db: Session = Depends(get_db), user_id: int = Depends(get_current_user_id)):
     today = date.today()
     data = payload.model_dump(exclude_unset=True)
 
-    log = db.query(HealthLog).filter_by(user_id=DEFAULT_USER_ID, date=today).one_or_none()
+    log = db.query(HealthLog).filter_by(user_id=user_id, date=today).one_or_none()
     if log:
         for field, value in data.items():
             setattr(log, field, value)
     else:
-        log = HealthLog(user_id=DEFAULT_USER_ID, date=today, **data)
+        log = HealthLog(user_id=user_id, date=today, **data)
         db.add(log)
 
     db.commit()
@@ -41,6 +39,7 @@ def upsert_today_health_log_form(
     social_media_minutes: int | None = Form(None),
     notes: str | None = Form(None),
     db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user_id),
 ):
     today = date.today()
     # Convert blank strings to None so optional fields behave
@@ -53,12 +52,12 @@ def upsert_today_health_log_form(
         "notes": notes if notes not in ("", None) else None,
     }
 
-    log = db.query(HealthLog).filter_by(user_id=DEFAULT_USER_ID, date=today).one_or_none()
+    log = db.query(HealthLog).filter_by(user_id=user_id, date=today).one_or_none()
     if log:
         for field, value in data.items():
             setattr(log, field, value)
     else:
-        log = HealthLog(user_id=DEFAULT_USER_ID, date=today, **data)
+        log = HealthLog(user_id=user_id, date=today, **data)
         db.add(log)
 
     db.commit()
@@ -67,7 +66,7 @@ def upsert_today_health_log_form(
 
 
 @router.get("/today", response_model=HealthLogRead | None)
-def get_today_health_log(db: Session = Depends(get_db)):
+def get_today_health_log(db: Session = Depends(get_db), user_id: int = Depends(get_current_user_id)):
     today = date.today()
-    log = db.query(HealthLog).filter_by(user_id=DEFAULT_USER_ID, date=today).one_or_none()
+    log = db.query(HealthLog).filter_by(user_id=user_id, date=today).one_or_none()
     return log
