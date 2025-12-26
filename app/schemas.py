@@ -9,7 +9,10 @@ class UserBase(BaseModel):
     last_name: str
     email:str
 
-
+class UserLogin(BaseModel):
+    email: str
+    password: str
+    
 #What the user sends during registration
 class UserCreate(UserBase):
     password: str
@@ -84,6 +87,7 @@ class TransactionRead(TransactionBase):
 class TransactionGraph(BaseModel):
     total_cents: int
     category: TransactionCategory
+
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -100,3 +104,7 @@ class BudgetRead(BudgetBase):
     time_created: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+class AuthResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
