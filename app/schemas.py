@@ -108,3 +108,17 @@ class BudgetRead(BudgetBase):
 class AuthResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
+
+class SummaryBase(BaseModel):
+    user_id: int
+    period_start: datetime
+    period_end: datetime
+    average_sleep: float
+    total_spend: int
+    danger_tasks: int
+
+class SummaryCreate(SummaryBase):
+    pass
+
+class SummaryRead(SummaryBase):
+    id: int

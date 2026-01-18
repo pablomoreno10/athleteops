@@ -83,3 +83,14 @@ class Budget(Base):
     time_created: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now())
 
 
+class Summary(Base):
+    __tablename__ = 'summaries'
+
+    __table_args__ = (UniqueConstraint("user_id", "period_start", "period_end", name="uq_summary"),)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False)
+    period_start: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    period_end: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    average_sleep: Mapped[float] = mapped_column(Float)
+    total_spend: Mapped[int] = mapped_column(Integer)
+    danger_tasks: Mapped[int] = mapped_column(Integer)
