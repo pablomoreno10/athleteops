@@ -31,6 +31,20 @@ services:
       timeout: 5s
       retries: 5
 
+  worker:
+    build: .
+    command: rq worker -u ${REDIS_URL} default
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+    environment:
+      REDIS_URL: ${REDIS_URL}
+      DATABASE_URL: ${DATABASE_URL}
+
+
 volumes:
   #Define the named volumes for data persistence
   postgres_data: 

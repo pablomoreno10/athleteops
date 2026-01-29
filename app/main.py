@@ -8,6 +8,7 @@ from app.routes.transaction import router as finance_router
 from app.routes.budgets import router as budget_router
 from app.routes.dashboard import router as dashboard_router
 from app.routes.credentials import router as credentials_router
+from app.routes.debug import router as debug_router
 
 app = FastAPI(title="AthleteOps API")
 
@@ -24,3 +25,4 @@ app.include_router(finance_router)
 app.include_router(budget_router)
 app.include_router(dashboard_router)
 app.include_router(credentials_router)
+app.include_router(debug_router)
